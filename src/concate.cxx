@@ -6,30 +6,35 @@
 std_msgs::String msg;
 std::stringstream ss;
 
+int count = 0;
+
 void concatesub(const std_msgs::String::ConstPtr msg) {
-	ROS_INFO("I recieve: [%s]", msg->data.c_str());
-	ss << msg->data.c_str() << " ";
+	
+	if(msg->data.c_str()!=" " || msg->data.c_str()!=NULL){
+		ROS_INFO("I found: [%s]", msg->data.c_str());
+		ss << msg->data.c_str() << " ";
+		++count;
+	}else{
+		ROS_INFO("No data recieved: [%s]", msg->data.c_str());
+	}
 }
 
 
 int main(int argc, char **argv) {
 	ros::init(argc, argv, "concate");
 	ros::NodeHandle n;
-	ros::Subscriber sub =n.subscribe<std_msgs::String>("chatter", 1000, concatesub);
-	ros::Publisher concate_pub =n.advertise<std_msgs::String>("chatter", 1000);
+	ros::Subscriber concate_sub = n.subscribe<std_msgs::String>("chatter", 1000, concatesub);
+	ros::Publisher concate_pub = n.advertise<std_msgs::String>("concate", 1000);
 	ros::Rate loop_rate(1);
-	int count = 0;
 	while (ros::ok()) {
 		if(count%5==0){
 			msg.data = ss.str();
 			ROS_INFO("%s", msg.data.c_str());
 			concate_pub.publish(msg);
-			ss.clear();
-
+			ss.str(std::string());
 		}
 		ros::spinOnce();
 		loop_rate.sleep();
-		++count;
 	}
 	return 0;
 }

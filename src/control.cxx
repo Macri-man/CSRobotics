@@ -10,15 +10,15 @@ int main(int argc, char **argv) {
 	int count = 0;
 	while (ros::ok()) {
 		std_msgs::String msg;
-		std::stringstream input;
-		cin >> input;
-		if(!(input == "start" || input == "stop" ||  input =="pause"){
-			cerr << "Wrong Input:" << input;
-			ROS_INFO("Wronf Input: %s", input);
+		std::string input;
+		std::cout << "Enter Command Master: ";
+		std::cin >> msg.data;
+		if(!(msg.data == "start" || msg.data == "stop" ||  msg.data =="pause")){
+			ROS_INFO("Wrong Input: %s", msg.data.c_str());
+		}else{
+			ROS_INFO("Command Sent: %s", msg.data.c_str());
+			control_pub.publish(msg);
 		}
-		msg.data = ss.str();
-		ROS_INFO("%s", msg.data.c_str());
-		control_pub.publish(msg);
 		ros::spinOnce();
 		loop_rate.sleep();
 	}

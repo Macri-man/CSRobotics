@@ -131,12 +131,12 @@ include_directories(
 add_executable(chatter_node src/chatter.cxx)
 add_executable(subscribe_node src/subscribe.cxx)
 add_executable(concate_node src/concate.cxx)
-add_executable(control_node src/concate.cxx)
+add_executable(control_node src/control.cxx)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 add_dependencies(chatter_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies( subscribe_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(subscribe_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(concate_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(control_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 

@@ -12,6 +12,8 @@ int swap(std::string stuff){
 		return 2;
 	}else if(stuff=="pause"){
 		return 3;
+	}else if(stuff==""){
+		return 0;
 	}else{
 		return -1;
 	}
@@ -35,9 +37,14 @@ int main(int argc, char **argv) {
 		std::stringstream ss;
 		ss << "hello world " << count;
 		msg.data = ss.str();
+		ROS_INFO("%s", msg.data.c_str());
 		switch(state){
+			case 0:
+				ROS_INFO("NO Message has been received!");
+				break;
 			case 1:
 				chatter_pub.publish(msg);
+				++count;
 				ROS_INFO("Starting Publishing with command: %s",recieve_msg.data.c_str());
 			break;
 			case 2:
@@ -50,10 +57,8 @@ int main(int argc, char **argv) {
 			default:
 				ROS_INFO("Something terrible happened with command: %s",recieve_msg.data.c_str());
 		}
-		ROS_INFO("%s", msg.data.c_str());
 		ros::spinOnce();
 		loop_rate.sleep();
-		++count;
 	}
 	return 0;
 }
